@@ -1,6 +1,6 @@
 ---
 name: humanizer-tw
-description: Rewrite text into Taiwan everyday Traditional Chinese. Convert Simplified Chinese, drop AI slop and PRC wording, keep English technical terms. Use when asked to humanize, 去 AI 痕跡, 簡轉繁, 台灣用語, 日常口吻, 人性化, or clean drafts for engineering notes, reviews, Slack, or investment notes.
+description: Rewrite into Taiwan Traditional Chinese that sounds everyday but stays engineer-grade. Convert Simplified Chinese, drop AI slop, keep English terms, numbers, and trade-offs. Use when asked to humanize, 去 AI 痕跡, 簡轉繁, 台灣用語, 日常口吻, 人性化, or clean engineering, architecture, review, or investment drafts.
 license: MIT
 compatibility: Works with Claude Code, Cursor, and Grok skills. Markdown-only. No network and no shell required.
 allowed-tools:
@@ -11,34 +11,38 @@ allowed-tools:
   - Glob
   - AskUserQuestion
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
   type: writing
   source: original rewrite inspired by yelban/humanizer.TW
 ---
 
 # humanizer-tw
 
-You rewrite text into 台灣日常用語. Sound like a person in Taipei talking at work or in LINE — clear, natural, a bit casual. Not a news draft, not a China internet post, not 網紅腔, not full 台語.
+Rewrite into Taiwan Mandarin an engineer would actually send to a teammate. Everyday words. Professional substance.
+
+Sound like standup / design review / PR comment — not a press release, not LINE stickers, not PRC internet, not full 台語.
 
 Keep English technical terms. Output 繁體中文（台灣）.
+
+## Priority when rules collide
+
+1. Correctness — do not drop a constraint, number, or failure mode to sound casual.
+2. Engineer precision — name the component, the env, the blast radius.
+3. Taiwan everyday wording — swap 公文 and PRC words for how people talk at work here.
+4. Brevity.
+
+If sounding 日常 would make the sentence vague, stay precise.
 
 ## Hard rules
 
 1. Conclusion first. Then why, risks, trade-offs.
 2. Keep technical nouns in English (Kubernetes, Cloud Run, IAP, RBAC, ETF, mNAV, LLM, Agent).
-3. Do not invent numbers, names, dates, SLAs, or personal stories.
-4. Do not add fake personality. Everyday speech is word choice, not a character.
-5. Do not dump 台語 romanization or 繁易 into an RFC unless the source already did.
-6. Do not strip meaning just to sound punchy.
-7. Always convert Simplified + PRC wording to Taiwan Traditional before other edits.
+3. Do not invent numbers, names, dates, SLAs, or stories.
+4. Do not add fake personality.
+5. Do not turn RFC / incident / review text into slang.
+6. Always convert Simplified + PRC wording first.
 
 ## Step 0 — script and lexicon
-
-Do this even if the user did not ask.
-
-1. Every Simplified character → Traditional.
-2. Swap PRC software / office words for Taiwan words.
-3. No mixed 簡繁 in one paragraph, except official product names.
 
 | Avoid | Use |
 |------|------|
@@ -46,24 +50,19 @@ Do this even if the user did not ask.
 | 信息 | 資訊 |
 | 数据库 | 資料庫 |
 | 默认 | 預設 |
-| 设置 | 設定 |
 | 视频 | 影片 |
-| 电脑 | 電腦 |
 | 网络 | 網路 |
 | 服务器 | 伺服器 |
 | 内存 | 記憶體 |
 | 硬盘 | 硬碟 |
 | 文件夹 | 資料夾 |
 | 质量 | 品質 |
-| 互联网 | 互聯網 |
 | 复制 | 複製 |
 | 粘贴 | 貼上 |
 | 登录 | 登入 |
 | 注册 | 註冊 |
 | 项目 | 專案 |
 | 代码 | 程式碼 |
-| 应用 | app / 應用程式 |
-| 配置 | 設置 |
 | 调试 | 除錯 |
 | 复现 | 復現 |
 | 兼容 | 相容 |
@@ -74,129 +73,108 @@ Do this even if the user did not ask.
 | 里面 | 裡面 |
 | 这里 | 這裡 |
 | 怎么办 | 怎麼辦 |
-| 挺好 | 還不錯 / 蠻好 |
-| 给力 | 有用 / 幫上忙 |
-| 靠谱 | 穩了 |
+| 挺好 | 還不錯 |
 
-Product names stay official (阿里雲, WeChat).
+Product names stay official. More pairs in [references/phrases.md](references/phrases.md).
 
-More pairs in [references/phrases.md](references/phrases.md).
+## Tone — 工程師的台灣日常
 
-## Tone — 台灣日常
+Words are everyday. Content is still an engineering note.
 
-Write like you are explaining to a colleague over coffee or in a group chat. Everyday, still usable at work.
+Keep:
 
-Do:
+- Named systems, env (`prod` / `staging`), owners if present
+- Failure mode, blast radius, rollback
+- Trade-off stated as A vs B, not 「要平衡」
+- Numbers and units unchanged
+- English terms unchanged
 
-- 我覺得、看起來、先這樣、再看、有點、還好、沒關係、這件先放、卡住了、先處理
-- Short sentences. Talkable if read aloud.
-- Concrete verbs: 改、拆、限、重試、上線、回滾、搞定
-- Soften certainty the way people actually do: 目前看起來還好、這還沒確認
-- 我們 not 咱們. 裡 not 裏. 裡面 not 里面.
+Everyday shell (OK):
 
-Do not:
+- 我覺得、看起來、先這樣、再看、有點、還好、這件先放、還沒驗完
+- 我們 / 裡面 / 這個模組 / 這個 service
 
-- 公文：予以、該案、敬談如上、特此通知、敬請指教、尚未
-- 大陸網路腔：挺、哎呀、搞定子（可以說搞定）、怎么着、咱們、给力、内卷
-- 網紅 / 過度稀稀：購就對了、真的超讚、超核、爆改、任性了、焉的、乾我
-- 硬填台語：不要突然亂進「妳」「黨」「來了啦」「超棒」
-- 課堂腔：我們不難發現、值得注意的是
+Do not use if they hide the technical point:
 
-Ladder — stop on 日常:
+- 搞定、多看看、有空再說 — too vague for arch / review / incident
+- 公文：予以、該案、敬談如上、敬請指教、尚未
+- 網紅：購就對了、超核、爆改、任性了、焉的
+- Fake 台語：妳、黨、來了啦、超棒
+- PRC chat：挺、哎呀、给力、咱們
+
+Ladder — park on the engineer-everyday step:
 
 ```
-公文  →  會議腔  →  台灣日常(目標)  →  過渡豬友  →  網紅
+公文
 該模組應予以優化
-這個模組建議拆掉
+
+會議專業
+建議拆此模組以降低耨合
+
+工程師日常 (目標)
+這模組跟 gateway 耨太緊，建議拆開。Trade-off 是要自己處理 idempotency。
+
+過渡口語
 這塊先拆比較快
-這塊直接爆掉重來
+
+網紅
+直接爆掉重來
 ```
 
-`arch` / `review` stay on everyday but skip sentence-final 啦/哈/吼.
-`slack` may use light particles (先這樣好了、再看看) once or twice, not every line.
+Default / slack may sit one half-step looser than arch / review. Never cross into 網紅.
 
 ## Modes
 
-| Mode | When | Voice |
-|------|------|-------|
-| default | blog, README, proposal | Taiwan everyday, still tidy |
-| arch | design doc, RFC | Everyday + precise lists |
-| review | PR | Everyday, name the file and the break |
-| invest | ticker note | Everyday + Bull / Bear / catalyst / risk |
-| slack | chat | One screen, light particles OK |
+| Mode | Voice |
+|------|-------|
+| default | Everyday TW + complete technical claim |
+| arch | Same words, tighter structure, keep every trade-off |
+| review | File / symbol / what breaks in prod |
+| invest | Everyday + Bull / Bear / catalyst / risk, no vibe calls |
+| slack | Shorter, still name the system |
 
-Honor `mode=`. If unclear, default.
+Honor `mode=`. Unclear → default.
 
 ## Delete or rewrite
 
-### Openers
-
-Drop: 隨著…發展、在…背景下、眾所周知、不言而喻、無庸置疑。Start at the fact.
-
-### Glue
-
-Cut: 此外、與此同時、首先…其次…最後、總的來說。
-If you need a link, use 另外、然後、只是, or nothing.
-
-### Startup slop
-
-| Drop | Prefer |
-|------|--------|
-| 賦能 | 幫忙 / 讓…能用 |
-| 痛點 | 問題 |
-| 閉環 | 從頭到尾都能跑 |
-| 賽道 | 這塊 / 這個市場 |
-| 深耕 | 做比較久 |
-| 沉澱 | 累積 |
-| 抓手 | 入手 |
-| 落地 | 上線 |
-| 打法 | 做法 |
-
-### Translationese and formal pronouns
-
-這是一個…的事情 → 直接說
-連續三個「的」 → 拆句
-其 / 該 / 此 / 予以 / 針對…而言 → 這個 / 因為 / 省略
-
+Openers: drop 隨著…發展、眾所周知、不言而喻.
+Glue: drop 此外、與此同時、首先…最後. Use 另外 or nothing.
+Slop: 賦能→讓…能用；痛點→問題；閉環→從頭到尾都跑得通；賽道→這塊市場；落地→上線.
+Closers: drop 拭目以待、攜手共進.
 Legal text: ask before casualizing.
-
-### Closers
-
-Delete 拭目以待、未來可期、攜手共進. Stop, or give a real next step already in the source.
 
 ## Structure
 
-1. One-sentence conclusion
-2. Why (only evidence in the source)
-3. Risks
+1. One-sentence conclusion (must still be technically true)
+2. Why, using only source evidence
+3. Risks / failure modes
 4. Trade-offs
-5. Next step only if it already exists
+5. Next step only if already in the source
 
 ## What not to do
 
-- No family / food color unless the source had it.
-- No new facts.
-- Leave fenced code, YAML, kubectl, commit subjects alone.
-- Do not expand a 120-word paste into an essay.
+- Do not replace `timeout 30s` with 「等一下」
+- Do not replace `IAM / IAP` with 「權限那塊」
+- Do not drop env or service names
+- No new facts, no fenced-code edits, no scope expansion
 
 ## File edits
 
-Named file only. Read, Edit, summarize diffs in ≤5 lines. No shell.
+Named file only. Read, Edit, ≤5-line diff summary. No shell.
 
 ## Output
 
-1. Rewritten text, all Traditional.
-2. Optional changelog: script, slop, tone.
+1. Rewritten text first.
+2. Optional changelog: script / slop / tone.
 3. Flag unsourced superlatives you dropped.
 
 ## Checklist
 
-- [ ] No Simplified left
-- [ ] TW words, not PRC software words
-- [ ] Reads fine out loud in Taiwan Mandarin
-- [ ] Not 公文, not 網紅, not fake 台語
-- [ ] English terms intact
-- [ ] No new facts
+- [ ] No Simplified, no PRC software words
+- [ ] English terms and numbers intact
+- [ ] Failure mode / trade-off still there if the source had them
+- [ ] Sounds like a Taiwan engineer, not a blog or a meme
 - [ ] Conclusion in sentence 1
+- [ ] No new facts
 
 See [references/phrases.md](references/phrases.md), [references/structures.md](references/structures.md), [references/examples.md](references/examples.md).

@@ -1,32 +1,23 @@
-# Structure and tone
+# Structure
 
-## Formula essay
+Keep the engineering skeleton. Only change the wrapper words.
 
-開頭總結 + 首先/其次/最後 + 金句 → 一句結論，接原稿裡就有的證據，再講風險。
+## Must survive a rewrite
 
-## False parallelism
+- service / module name
+- env
+- numeric SLO / timeout / replica
+- failure mode
+- trade-off pair
 
-不僅是 A，更是 B → 直接說 B。
+## Bad rewrite
 
-## Empty contrast
+Before: Cloud Run timeout 30s，超過就 504，建議改 60s 並加 retry budget。
+Bad: 有時候會超時，先調鬆一點好了。
+Good: Cloud Run timeout 目前 30s，超過會 504。建議改 60s，同時設 retry budget，避免重複下單。
 
-機遇與挑戰並存 → 說真正的 trade-off（錢 vs 延遲、人手 vs 隔離）。
+## Tone shifts that keep precision
 
-## Review
-
-建議依照最佳實務優化 → 哪個檔、會怎麼壞。
-
-## Tone shifts
-
-太硬 → 日常：
-
-- 該服務應予以重構 → 這個 service 重寫比較快
-- 敬談各位同仁驗收 → 請各位幫看一下
-- 尚未進行完整驗證 → 還沒驗完
-- 我認為我們需要進行討論 → 這件要再對一下
-
-太豬 → 日常：
-
-- 這塊直接爆掉重來吧 → 這塊不要了，重寫比較快
-- 真的超讚這波 → 這次改過有用
-- 大家趕緊 star 一下啦 → 需要的話可以 star
+- 該服務應予以重構 → 這個 service 建議重寫
+- 尚未進行完整驗證 → staging 還沒驗完
+- 我們需要就安全性與成本取得平衡 → Trade-off：IAP 多一層 vs 每個 service 自管 IAM
