@@ -1,24 +1,31 @@
 # humanizer-tw
 
-繁體中文技術文寫作去 AI 痕跡 skill。把簡體與公文腔改成台灣工程師在會議裡會說的話：專業、平常、不連範。
+把簡體、公文腔、AI 套話改成台灣日常用語。像在 LINE 跟同事講，不像發稿，也不像在紗紗。
 
 靈感來自 [yelban/humanizer.TW](https://github.com/yelban/humanizer.TW)、[blader/humanizer](https://github.com/blader/humanizer)、[hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop)，規則重寫。
 
 ## 做什麼
 
 - 簡體 → 台灣繁體（字形 + 用詞）
+- 語調停在「台灣日常」：我覺得、先這樣、再看、有點、還好
+- 技術名詞留 English
 - 先結論，再原因 / 風險 / Trade-off
-- 技術名詞保留 English
-- 語調停在「專業平常」：不公文、不網紅、不造假人格
-- 不用來騙 AI detector
+- 不造假、不騙 detector
+
+## 語調
+
+```
+公文 → 會議腔 → 台灣日常(目標) → 過渡豬友 → 網紅
+```
+
+「該模組應予以優化」→「這塊先拆比較快」  
+不要變「直接爆掉重來啦」。
 
 ## Install
 
 ```bash
 git clone https://github.com/rufushsu9987/humanizer-tw.git ~/.claude/skills/humanizer-tw
 ```
-
-已裝過就 pull：
 
 ```bash
 git -C ~/.claude/skills/humanizer-tw pull
@@ -29,36 +36,15 @@ git -C ~/.claude/skills/humanizer-tw pull
 ```
 /humanizer-tw
 
-[貼上簡體或繁體草稿]
+[貼簡體或繁體草稿]
 ```
 
 ```
-/humanizer-tw mode=arch
-這段架構說明改到可以直接貼進 RFC
+/humanizer-tw mode=slack
+這段改成可以直接貼群組
 ```
 
 Modes：`default` · `arch` · `review` · `invest` · `slack`
-
-## Tone
-
-```
-公文  ←  專業平常(目標)  →  過渡口語  →  網紅
-```
-
-範例：「該模組應予以優化」→「這模組還是拆」。不要變「直接爆掉重來」。
-
-## Layout
-
-```
-humanizer-tw/
-├── SKILL.md
-├── README.md
-├── LICENSE
-└── references/
-    ├── phrases.md
-    ├── structures.md
-    └── examples.md
-```
 
 ## License
 

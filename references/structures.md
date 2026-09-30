@@ -2,39 +2,31 @@
 
 ## Formula essay
 
-Pattern: thesis + 首先/其次/最後 + 金句.
-Fix: one claim, evidence already present, then risk.
+開頭總結 + 首先/其次/最後 + 金句 → 一句結論，接原稿裡就有的證據，再講風險。
 
 ## False parallelism
 
-Pattern: 不僅是 A，更是 B.
-Fix: state B. If A matters, one clause.
+不僅是 A，更是 B → 直接說 B。
 
 ## Empty contrast
 
-Pattern: 機遇與挑戰並存.
-Fix: name the actual trade-off (cost vs latency, ops burden vs isolation).
+機遇與挑戰並存 → 說真正的 trade-off（錢 vs 延遲、人手 vs 隔離）。
 
-## Fake completeness
+## Review
 
-Pattern: 全方位、多維度、系統性解決方案.
-Fix: list the two or three things the system actually does.
+建議依照最佳實務優化 → 哪個檔、會怎麼壞。
 
-## Review anti-pattern
+## Tone shifts
 
-Pattern: 建議依照最佳實務進一步優化.
-Fix: file, behavior, what breaks in prod.
+太硬 → 日常：
 
-## Tone shift examples
-
-Stiff → target:
-
-- 該服務應予以重構 → 這個 service 要重寫
-- 敬談各位同仁驗收 → 請各位 review
+- 該服務應予以重構 → 這個 service 重寫比較快
+- 敬談各位同仁驗收 → 請各位幫看一下
 - 尚未進行完整驗證 → 還沒驗完
+- 我認為我們需要進行討論 → 這件要再對一下
 
-Chatty → target:
+太豬 → 日常：
 
 - 這塊直接爆掉重來吧 → 這塊不要了，重寫比較快
-- 真的超讚這波改動 → 這次改動有效
-- 大家趕緊 star 一下啦 → 需要的話可以 star 這個 repo
+- 真的超讚這波 → 這次改過有用
+- 大家趕緊 star 一下啦 → 需要的話可以 star

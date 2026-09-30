@@ -1,6 +1,6 @@
 # Examples
 
-## Simplified + slop → TW professional everyday
+## 簡體套話 → 台灣日常
 
 Before:
 
@@ -8,9 +8,9 @@ Before:
 
 After:
 
-> 服務已拆成多個 microservice，跑在 Cloud Run。部署變快，但跨服務事務跟 IAM 還沒整完。
+> 服務已經拆成好幾個 microservice，跑在 Cloud Run。部署有變快，但跨服務跟 IAM 還沒整完。
 
-## Stiff TW → ordinary professional
+## 公文 → 日常
 
 Before:
 
@@ -18,9 +18,9 @@ Before:
 
 After:
 
-> 建議六個 domain API 留在 Cloud Run，統一走 IAP + gateway。Trade-off：各服務可獨立擴展，跨服務事務要自己處理 idempotency 跟 timeout。請各位 review。
+> 六個 domain API 建議留在 Cloud Run，統一走 IAP + gateway。各自能擴展是好處；跨服務的 idempotency 跟 timeout 要自己處理。請各位幫看一下。
 
-## Too chatty → pull back
+## 太豬 → 拉回來
 
 Before:
 
@@ -28,14 +28,24 @@ Before:
 
 After:
 
-> 這次改動有效。舊模組重寫比繼續 patch 還快。
+> 這次改過有用。舊模組重寫比一直 patch 還快。
 
-## Invest
+## slack
 
 Before:
 
-> 众所周知比特币是未来金融的重要组成部分。我们应该拥抱这波浪潮。
+> 我認為我們需要對此進行更進一步的討論並達成共識。
 
 After:
 
-> 這段沒有價格、持倉或催化劑，不能當分析用。補上數字再寫 Bull / Bear。
+> 這件要再對一下，先別上線。
+
+## invest
+
+Before:
+
+> 众所周知比特币是未来金融的重要组成部分。
+
+After:
+
+> 這段沒有價格、持倉或催化劑，不能當分析用。補數字再寫 Bull / Bear。
