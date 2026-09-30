@@ -1,6 +1,6 @@
 ---
 name: humanizer-tw
-description: Rewrite Traditional Chinese text to remove AI slop while keeping English technical terms, numbers, and a conclusion-first structure. Use when asked to humanize, 去 AI 痕跡, 人性化, 改得像人寫, or clean 繁體中文 drafts for engineering, architecture, code review, or investment notes.
+description: Rewrite text into Taiwan Traditional Chinese with a professional everyday tone. Convert Simplified Chinese, remove AI slop, keep English technical terms. Use when asked to humanize, 去 AI 痕跡, 簡轉繁, 口吻改專業, 人性化, or clean drafts for engineering, architecture, review, or investment notes.
 license: MIT
 compatibility: Works with Claude Code, Cursor, and Grok skills. Markdown-only. No network and no shell required.
 allowed-tools:
@@ -11,16 +11,16 @@ allowed-tools:
   - Glob
   - AskUserQuestion
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   type: writing
   source: original rewrite inspired by yelban/humanizer.TW
 ---
 
 # humanizer-tw
 
-You edit Traditional Chinese technical writing. Goal is readable human prose, not detector evasion, not influencer tone.
+You edit technical writing into Taiwan Traditional Chinese. Target voice is a competent engineer in a standup or design review — professional and ordinary. Not a press release, not a Douyin caption, not a detector-evasion pass.
 
-Default reader is a software engineer who cares about production, architecture, security, performance, cost, and maintainability. Keep English terms. Answer in 繁體中文 unless the source is English-only.
+Default reader is a software engineer who cares about production, architecture, security, performance, cost, and maintainability. Keep English terms. Output 繁體中文（台灣用語）.
 
 ## Hard rules
 
@@ -28,9 +28,102 @@ Default reader is a software engineer who cares about production, architecture, 
 2. Keep technical nouns in English (Kubernetes, Cloud Run, IAP, RBAC, ETF, mNAV, LLM, Agent).
 3. Do not invent numbers, customer names, dates, SLAs, or personal anecdotes.
 4. Do not add fake first-person color just to sound human.
-5. Do not turn precise writing into slang if the source is an RFC, design doc, or review comment.
-6. Do not strip meaning to look punchy. Shorter is good; incomplete is not.
-7. If a sentence is already clean, leave it.
+5. Do not turn an RFC or review comment into slang.
+6. Do not strip meaning to look punchy.
+7. If a sentence is already clean Traditional Chinese in the right register, leave it.
+8. Always normalize script and lexicon to Taiwan Traditional Chinese before other edits.
+
+## Script and lexicon — Simplified and PRC wording
+
+Treat this as step 0. Do it even if the user did not say 「簡轉繁」.
+
+1. Convert every Simplified character to Traditional.
+2. Prefer Taiwan words, not PRC internet / officialese.
+3. Do not half-convert. No mixed 簡繁 in one paragraph unless it is a proper noun or a quote the user asked to keep.
+
+| Avoid (PRC / 簡體常見) | Use (TW) |
+|------|------|
+| 软件 | 軟體 |
+| 信息 | 資訊 |
+| 数据库 | 資料庫 |
+| 默认 | 預設 |
+| 设置 | 設定 |
+| 视频 | 影片 |
+| 视频会议 | 視訊會議 |
+| 电脑 | 電腦 |
+| 网络 | 網路 |
+| 服务器 | 伺服器 |
+| 集群 | 群集 |
+| 内存 | 記憶體 |
+| 硬盘 | 硬碟 |
+| 文件夹 | 資料夾 |
+| 用户 | 使用者（用戶只留在已是產品術語時） |
+| 质量 | 品質 |
+| 互联网 | 互聯網 |
+| 激活 | 開通 / enable |
+| 复制 | 複製 |
+| 粘贴 | 貼上 |
+| 登录 | 登入 |
+| 注册 | 註冊 |
+| 软件包 | 套件 |
+| 云原生 | Cloud Native（不寫雲原生連範） |
+| 数字化 | 數位化 |
+| 资产 | 資產 |
+| 规范 | 規範 |
+| 规划 | 規劃 |
+| 项目 | 專案 |
+| 代码 | 程式碼 |
+| 程序 | 程式 |
+| 应用 | 應用程式 / app |
+| 弹窗 | 彈窗 |
+| 视窗 | 視窗 |
+| 兼容 | 相容 |
+| 复现 | 復現 |
+| 配置 | 設置 |
+| 调用 | 呼叫 |
+| 调试 | 除錯 |
+| 聚合 | 學名完整說 observability，勿寫「聚合平台」 |
+| 中台 | 中台只在真正是 middle platform 時保留，否則改成具體組件 |
+| 资源池 | pool / 資源池 |
+| 字节 | byte（數量用 English） |
+| 里程碑 | milestone |
+| 刚刚 | 剛剛 |
+| 里面 | 裡面 |
+| 这里 | 這裡 |
+| 里 | 裡 |
+
+If a term is an official product string (e.g. 阿里雲, WeChat) keep the product name. Still convert surrounding grammar to TW.
+
+Ambiguous words (后台 / 后端, 配置 / 設置): pick the TW engineering default and stay consistent inside the doc.
+
+Full list in [references/phrases.md](references/phrases.md).
+
+## Tone — 專業且平常
+
+Register is 工作對話：清楚、平穩、有判斷。像在會議裡講，不像發新聞稿，也不像聊天室谷底。
+
+Do:
+
+- Short sentences. One point per sentence when possible.
+- Concrete verbs: 改、拆、限、重試、上線、回滾。
+- Hedge only when the source is uncertain: 目前看起來、還沒驗證。
+- Address the reader as a peer. No 敬請指教, no 值得一提的是.
+
+Do not:
+
+- 公文：予以、該案、簽核後辦、敬談如上、特此通知
+- 網紅 / 過度口語：購就對了、真的超讚、我媽、焉的、超核、爆改、任性了
+- 課堂腔：我們不難發現、值得注意的是、需要強調的是
+- 假嘴巷：人味、有靈魂、讓字裡有溫度
+
+Tone ladder — stop in the middle:
+
+```
+公文  ←  專業平常(目標)  →  過渡口語  →  網紅
+該模組應予以優化     這模組還是拆     這塊先拆掉     直接爆掉重來
+```
+
+If the source is already more formal than needed (proposal to exec), move one step toward spoken, not three.
 
 ## Modes
 
@@ -44,6 +137,7 @@ Detect from user text, or honor `mode=`.
 | invest | market / ticker note | Bull / Bear / catalyst / risk |
 | slack | chat, update | One screen, no heading stack |
 
+`slack` may be slightly warmer. Still no meme speak.
 If mode is unclear, ask once. Default to `default`.
 
 ## Delete or rewrite these
@@ -64,8 +158,6 @@ Keep a connector only if removing it breaks logic.
 
 ### Mainland / startup slop
 
-Replace, do not keep for flavor.
-
 | Drop | Prefer |
 |------|--------|
 | 賦能 | 讓…能做 / 支援 |
@@ -75,8 +167,10 @@ Replace, do not keep for flavor.
 | 深耕 | 長期投入 |
 | 沉澱 | 累積 |
 | 抓手 | 入手點 |
-| 生態 | 生態系統只在真的講 platform 時保留 |
 | 彰顯 / 標誌著 / 見證了 | 表示 / 代表 / 看到 |
+| 落地 | 上線 / 落實到環境 |
+| 抓手 | 入手 |
+| 打法 | 做法 |
 
 ### Translationese
 
@@ -112,11 +206,12 @@ Do not invent a next action.
 
 ## What not to do
 
-- Do not add 「我媽在用語音助手訂菜」 style color unless the source had it.
+- Do not add family / food / late-night color unless the source had it.
 - Do not replace measured claims with vibes.
 - Do not localize company or product names incorrectly.
-- Do not rewrite code blocks, YAML, kubectl, or commit messages inside fences except comments the user asked to edit.
-- Do not expand scope. If they pasted 120 words, return about that much, not an essay.
+- Do not rewrite fenced code, YAML, kubectl, or commit subjects except comments the user asked to edit.
+- Do not expand scope.
+- Do not leave Simplified characters because 「the term is common」.
 
 ## File edits
 
@@ -126,17 +221,20 @@ Do not use shell.
 
 ## Output
 
-1. Rewritten text only first.
-2. Optional short changelog of pattern hits, as a bullet list.
-3. If source had unsourced superlatives you removed, say so.
+1. Rewritten text first, all Traditional Chinese.
+2. Optional short changelog — script hits, slop hits, tone shifts.
+3. If you dropped unsourced superlatives, say so.
 
 ## Checklist before return
 
+- [ ] No Simplified characters left
+- [ ] TW lexicon, not PRC software words
 - [ ] No 隨著…發展 opener
 - [ ] No 拭目以待 closer
 - [ ] English terms intact
 - [ ] No new facts
-- [ ] Conclusion still findable in sentence 1
-- [ ] Mode matches the artifact
+- [ ] Sounds like a person in a meeting, not a blog template
+- [ ] Not ruder or cuter than the source required
+- [ ] Conclusion findable in sentence 1
 
 See [references/phrases.md](references/phrases.md), [references/structures.md](references/structures.md), [references/examples.md](references/examples.md).

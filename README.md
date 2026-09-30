@@ -1,12 +1,15 @@
 # humanizer-tw
 
-繁體中文技術文寫作去 AI 痕跡 skill。針對軟體工程師、DevOps / Cloud / AI / 投資筆記，不是通用口語化網紅。
+繁體中文技術文寫作去 AI 痕跡 skill。把簡體與公文腔改成台灣工程師在會議裡會說的話：專業、平常、不連範。
 
-靈感來自 [yelban/humanizer.TW](https://github.com/yelban/humanizer.TW)、[blader/humanizer](https://github.com/blader/humanizer)、[hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop)，但規則重寫：
+靈感來自 [yelban/humanizer.TW](https://github.com/yelban/humanizer.TW)、[blader/humanizer](https://github.com/blader/humanizer)、[hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop)，規則重寫。
 
+## 做什麼
+
+- 簡體 → 台灣繁體（字形 + 用詞）
 - 先結論，再原因 / 風險 / Trade-off
 - 技術名詞保留 English
-- 不造假數據、不造假人格、不變成網紅口吻
+- 語調停在「專業平常」：不公文、不網紅、不造假人格
 - 不用來騙 AI detector
 
 ## Install
@@ -15,23 +18,19 @@
 git clone https://github.com/rufushsu9987/humanizer-tw.git ~/.claude/skills/humanizer-tw
 ```
 
-或複製到 Grok / Cursor skills 目錄：
+已裝過就 pull：
 
 ```bash
-cp -r SKILL.md references ~/.grok/skills/humanizer-tw/
+git -C ~/.claude/skills/humanizer-tw pull
 ```
-
-驗證：重啟後輸入 `/humanizer-tw`。
 
 ## Usage
 
 ```
 /humanizer-tw
 
-[貼上要改的文]
+[貼上簡體或繁體草稿]
 ```
-
-或指定語境：
 
 ```
 /humanizer-tw mode=arch
@@ -40,13 +39,13 @@ cp -r SKILL.md references ~/.grok/skills/humanizer-tw/
 
 Modes：`default` · `arch` · `review` · `invest` · `slack`
 
-## What it strips
+## Tone
 
-時代開場、共識套話、連接詞濫用、互聯網黑話、翻譬腔、公文代詞、公式化三段落、展望結尾、虛假具體數據。
+```
+公文  ←  專業平常(目標)  →  過渡口語  →  網紅
+```
 
-## What it keeps
-
-Kubernetes、Cloud Run、IAP、RBAC、mNAV、ETF 等術語、數字、SLA、commit hash、法規名稱。
+範例：「該模組應予以優化」→「這模組還是拆」。不要變「直接爆掉重來」。
 
 ## Layout
 
@@ -63,4 +62,4 @@ humanizer-tw/
 
 ## License
 
-MIT。規則是重寫，不是上游 repo 的翻譬複製。
+MIT
